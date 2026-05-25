@@ -212,7 +212,6 @@ select.field-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
 
 <div id="app">
 
-  <!-- INÍCIO -->
   <div id="scr-inicio" class="screen active">
     <div class="topbar">
       <div><div class="topbar-logo">TirzeLess</div><div class="topbar-sub" id="saudacao">Carregando...</div></div>
@@ -318,7 +317,6 @@ select.field-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
     </div>
   </div>
 
-  <!-- HISTÓRICO -->
   <div id="scr-hist" class="screen">
     <div class="topbar"><div><div class="topbar-logo">Histórico</div><div class="topbar-sub">Sua evolução</div></div></div>
     <div class="scroll">
@@ -336,7 +334,6 @@ select.field-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
     </div>
   </div>
 
-  <!-- REGISTRO -->
   <div id="scr-reg" class="screen">
     <div class="topbar"><div><div class="topbar-logo">Registro</div><div class="topbar-sub">Nova entrada</div></div></div>
     <div class="scroll">
@@ -416,7 +413,6 @@ select.field-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
     </div>
   </div>
 
-  <!-- TREINOS -->
   <div id="scr-treino" class="screen">
     <div class="topbar"><div><div class="topbar-logo">Treinos</div><div class="topbar-sub">Meus planos</div></div></div>
     <div class="scroll">
@@ -430,7 +426,6 @@ select.field-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
     </div>
   </div>
 
-  <!-- AJUSTES -->
   <div id="scr-ajustes" class="screen">
     <div class="topbar"><div><div class="topbar-logo">Ajustes</div><div class="topbar-sub">Configurações e metas</div></div></div>
     <div class="scroll">
@@ -462,7 +457,6 @@ select.field-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
     </div>
   </div>
 
-  <!-- BOTTOM NAV -->
   <nav class="bottomnav">
     <button class="nb active" id="nb-inicio" onclick="navTo('inicio')"><span class="ni"><i class="ti ti-home"></i></span><span class="nl">Início</span></button>
     <button class="nb" id="nb-hist" onclick="navTo('hist')"><span class="ni"><i class="ti ti-chart-line"></i></span><span class="nl">Histórico</span></button>
@@ -472,7 +466,6 @@ select.field-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http:/
   </nav>
 </div>
 
-<!-- MODALS -->
 <div class="modal-ov" id="modal-macro">
   <div class="modal-sheet">
     <button class="m-close" onclick="closeModal('modal-macro')"><i class="ti ti-x"></i></button>
@@ -779,6 +772,7 @@ function renderHist() {
 
   // modal peso
   var mlist = document.getElementById('modal-peso-list');
+  mllist = document.getElementById('modal-peso-list');
   mlist.innerHTML = '';
   regs.slice(0,6).forEach(function(r) {
     var d = new Date(r.created_at);
@@ -887,8 +881,8 @@ async function salvarReg() {
 var MACRO_META = {
   agua:  { name:'água',        unit:'ml', chips:['100','200','300','500'], field:'agua' },
   prot:  { name:'proteína',    unit:'g',  chips:['10','20','30','50'],    field:'proteina' },
-  carb:  { name:'carboidrato', unit:'g',  chips:['15','30','50'],          field:'carboidrato' },
-  fiber: { name:'fibras',      unit:'g',  chips:['3','5','8'],             field:'fibras' }
+  carb:  { name:'carboidrato', unit:'g',  chips:['15','30','50'],         field:'carboidrato' },
+  fiber: { name:'fibras',      unit:'g',  chips:['3','5','8'],            field:'fibras' }
 };
 
 function openMacro(type) {
