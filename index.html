@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#7C3AED">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="TirzeLess">
+<title>TirzeLess</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --p1:#7C3AED;--p2:#A855F7;--b1:#3B82F6;--b2:#60A5FA;--g1:#10B981;--g2:#34D399;
+  --bg:#F0EFFE;--white:#FFFFFF;
+  --border:#EDE9FE;--border2:#DDD6FE;
+  --txt:#1E1B4B;--txt2:#7C6FCD;--txt3:#A5B4FC;
+  --ff:'Plus Jakarta Sans',system-ui,sans-serif;
+  --r-sm:10px;--r-md:14px;--r-lg:18px;--r-xl:22px;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;background:var(--bg);font-family:var(--ff);color:var(--txt);font-size:14px;overflow:hidden}
+#app{height:100%;display:flex;flex-direction:column;max-width:480px;margin:0 auto;background:var(--bg)}
+.screen{display:none;flex:1;flex-direction:column;overflow:hidden;padding-top:var(--safe-top)}
+.screen.active{display:flex}
+.scroll{flex:1;overflow-y:auto;padding:12px 14px 16px;-webkit-overflow-scrolling:touch}
+.scroll::-webkit-scrollbar{display:none}
+
+/* Topbar */
+.topbar{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between;background:var(--white);border-bottom:1.5px solid var(--border);flex-shrink:0}
+.topbar-logo{font-size:19px;font-weight:700;background:linear-gradient(90deg,var(--p1),var(--b1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.02em}
+.topbar-sub{font-size:11px;color:var(--txt2);margin-top:1px}
+.icon-btn{width:34px;height:34px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--p1);font-size:16px;flex-shrink:0}
+
+/* Hero */
+.hero{margin:12px 14px 0;border-radius:var(--r-xl);padding:18px;background:linear-gradient(135deg,#6d28d9,#3b82f6);color:#fff;border:1.5px solid #5b21b6;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.07)}
+.hero-label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;opacity:.8;margin-bottom:4px}
+.hero-row{display:flex;align-items:flex-end;gap:8px}
+.hero-val{font-size:40px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.hero-unit{font-size:16px;font-weight:500;opacity:.8;margin-bottom:5px}
+.hero-delta{font-size:12px;font-weight:600;background:rgba(255,255,255,.18);padding:3px 10px;border-radius:99px;margin-top:8px;display:inline-block}
+.hero-link{font-size:11px;opacity:.7;margin-top:6px;display:block;cursor:pointer;width:fit-content}
+.eye-btn{background:none;border:none;cursor:pointer;color:rgba(255,255,255,.8);font-size:17px;padding:4px;line-height:1;margin-left:auto;margin-bottom:4px}
+
+/* Section */
+.sec{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--txt2);margin:14px 0 8px}
+
+/* Goal cards */
+.goals-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.goal-card{background:var(--white);border-radius:var(--r-lg);padding:13px;cursor:pointer;transition:transform .12s;border:1.5px solid var(--border)}
+.goal-card:active{transform:scale(.96)}
+.goal-card.water{border-color:#BFDBFE}.goal-card.prot{border-color:#DDD6FE}.goal-card.carb{border-color:#FDE68A}.goal-card.fiber{border-color:#A7F3D0}
+.goal-icon-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.goal-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.gi-w{background:#EFF6FF;border:1px solid #BFDBFE}.gi-p{background:#F5F3FF;border:1px solid #DDD6FE}.gi-c{background:#FFFBEB;border:1px solid #FDE68A}.gi-f{background:#ECFDF5;border:1px solid #A7F3D0}
+.goal-pct{font-size:12px;font-weight:700}
+.pct-w{color:#3B82F6}.pct-p{color:#7C3AED}.pct-c{color:#D97706}.pct-f{color:#10B981}
+.goal-name{font-size:11px;color:var(--txt2);margin-bottom:2px;font-weight:500}
+.goal-num{font-size:15px;font-weight:700;color:var(--txt)}
+.goal-num span{font-size:11px;font-weight:400;color:var(--txt3)}
+.goal-meta{font-size:10px;color:var(--txt3);margin-top:1px}
+.pbar-bg{height:5px;border-radius:99px;background:#F0EFFE;margin-top:7px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:99px;transition:width .4s}
+.pb-w{background:linear-gradient(90deg,#3B82F6,#60A5FA)}.pb-p{background:linear-gradient(90deg,#7C3AED,#A855F7)}.pb-c{background:linear-gradient(90deg,#D97706,#FBBF24)}.pb-f{background:linear-gradient(90deg,#10B981,#34D399)}
+
+/* Dose */
+.dose-card{background:var(--white);border-radius:var(--r-lg);border:1.5px solid #FDE68A;padding:13px;display:flex;align-items:center;gap:12px;cursor:pointer}
+.dose-ico{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#FEF3C7,#FDE68A);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.dose-chip{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px;background:#FEF3C7;color:#B45309;border:1px solid #FDE68A;white-space:nowrap}
+
+/* Gauge */
+.gauge-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gauge-card{background:var(--white);border-radius:var(--r-lg);border:1.5px solid var(--border);padding:12px;text-align:center}
+.gauge-title{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--txt2);margin-bottom:6px}
+.gauge-val{font-size:18px;font-weight:700;color:var(--txt);margin-top:2px}
+.gauge-lbl{font-size:10px;color:var(--txt3);margin-top:1px}
+
+/* Streak */
+.streak-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.streak-card{background:var(--white);border-radius:var(--r-md);border:1.5px solid var(--border);padding:10px;text-align:center}
+.streak-num{font-size:20px;font-weight:700;background:linear-gradient(135deg,var(--p1),var(--b1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.streak-lbl{font-size:9px;color:var(--txt2);margin-top:2px;font-weight:500}
+
+/* Hist */
+.hist-item{background:var(--white);border-radius:var(--r-lg);border:1.5px solid var(--border);padding:13px;margin-bottom:10px;display:flex;gap:12px}
+.hist-day{font-size:20px;font-weight:700;color:var(--p1);line-height:1}
+.hist-mon{font-size:9px;font-weight:700;letter-spacing:.05em;color:var(--txt3);text-transform:uppercase;margin-top:2px;text-align:center}
+.hist-peso{font-size:14px;font-weight:700;color:var(--txt)}
+.hist-meta{font-size:11px;color:var(--txt2);margin-top:2px}
+.hist-tag{display:inline-block;margin-top:5px;font-size:10px;padding:2px 9px;border-radius:99px;background:#F5F3FF;color:var(--p1);font-weight:600;border:1px solid var(--border2)}
+.hist-photo{width:44px;height:44px;border-radius:12px;background:#F5F3FF;border:1px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#A78BFA;font-size:20px;overflow:hidden}
+.hist-photo img{width:100%;height:100%;object-fit:cover}
+
+/* Chart */
+.chart-bar-wrap{display:flex;gap:3px;align-items:flex-end;height:72px}
+.chart-bar-col{flex:1;display:flex;align-items:flex-end}
+.chart-bar{width:100%;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#A855F7,#818CF8);transition:height .3s}
+
+/* Form */
+.reg-form{display:flex;flex-direction:column;gap:13px;padding-bottom:16px}
+.field-label{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--txt2);margin-bottom:5px;display:block}
+.field-input{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--r-md);font-size:14px;font-family:var(--ff);background:var(--white);color:var(--txt);outline:none;transition:border .12s;-webkit-appearance:none}
+.field-input:focus{border-color:#A78BFA}
+select.field-input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%237C6FCD' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.photo-upload{width:100%;padding:20px;border:2px dashed var(--border2);border-radius:var(--r-lg);display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;background:var(--white);color:var(--txt2);font-size:12px;font-weight:500;transition:all .15s}
+.photo-upload:active{background:#F5F3FF;border-color:#A78BFA}
+
+/* Abdomen */
+.abd-wrap{background:var(--white);border-radius:var(--r-lg);border:1.5px solid var(--border2);overflow:hidden}
+.abd-header{padding:10px 14px 6px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--txt2);text-align:center}
+.abd-container{position:relative;width:100%;height:240px;background:#F8F0E8;overflow:hidden}
+.zone{position:absolute;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;border:1px solid rgba(255,255,255,.35)}
+.zone-inner{text-align:center;pointer-events:none}
+.zone-name{font-size:10px;font-weight:700;color:rgba(255,255,255,.95);text-shadow:0 1px 3px rgba(0,0,0,.4);line-height:1.2}
+.zone-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.45);border:2px solid rgba(255,255,255,.8);margin:5px auto 0}
+.zone.selected .zone-dot{background:#22C55E;border-color:#fff;box-shadow:0 0 0 3px rgba(34,197,94,.4)}
+.zone.used .zone-dot{background:#F59E0B;border-color:#fff}
+.abd-legend{padding:6px 14px 8px;display:flex;gap:12px;justify-content:center}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--txt2);font-weight:500}
+.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* Buttons */
+.btn-save{width:100%;padding:14px;border-radius:var(--r-md);border:none;background:linear-gradient(135deg,var(--p1),var(--b1));color:#fff;font-size:14px;font-weight:700;font-family:var(--ff);cursor:pointer;transition:opacity .12s}
+.btn-save:active{opacity:.82}
+.btn-save:disabled{opacity:.5;cursor:not-allowed}
+
+/* Treinos */
+.treino-item{background:var(--white);border-radius:var(--r-lg);border:1.5px solid var(--border);padding:13px;margin-bottom:10px}
+.treino-hdr{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.treino-num{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#EDE9FE,#E0E7FF);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--p1);flex-shrink:0}
+.treino-name{font-size:14px;font-weight:700;flex:1;color:var(--txt)}
+.treino-act{display:flex;gap:6px}
+.t-btn{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--txt2);font-size:14px}
+.pdf-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#F5F3FF;border-radius:10px;font-size:11px;color:var(--txt2);border:1px solid var(--border)}
+.add-treino{background:var(--white);border-radius:var(--r-lg);border:2px dashed var(--border2);padding:14px;margin-bottom:10px;display:flex;flex-direction:column;gap:10px}
+.add-treino input{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:12px;font-size:13px;font-family:var(--ff);background:#F8F7FF;color:var(--txt);outline:none}
+.btn-add{width:100%;padding:11px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--p1),var(--b1));color:#fff;font-size:13px;font-weight:700;font-family:var(--ff);cursor:pointer}
+
+/* Ajustes */
+.perfil-card{background:var(--white);border-radius:var(--r-lg);border:1.5px solid var(--border);overflow:hidden;margin-bottom:12px}
+.perfil-sec{padding:13px 14px;border-bottom:1px solid #F0EFFE}
+.perfil-sec:last-child{border-bottom:none}
+.perfil-sec-title{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--txt2);margin-bottom:10px}
+.pf-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.pf-row:last-child{margin-bottom:0}
+.pf-label{font-size:13px;color:var(--txt)}
+.pf-input{width:72px;padding:5px 8px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:var(--ff);text-align:right;background:#F8F7FF;color:var(--txt);outline:none}
+.pf-unit{font-size:12px;color:var(--txt3);min-width:20px}
+
+/* Bottom nav */
+.bottomnav{height:calc(60px + var(--safe-bot));background:var(--white);border-top:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding:0 4px var(--safe-bot);flex-shrink:0}
+.nb{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:6px 8px;border-radius:12px;color:var(--txt3);font-family:var(--ff);transition:all .12s;min-width:48px}
+.nb.active{color:var(--p1)}
+.nb .ni{font-size:20px;line-height:1}
+.nb .nl{font-size:9px;font-weight:600}
+.nb-reg{background:linear-gradient(135deg,var(--p1),var(--b1));border:none;border-radius:18px;width:52px;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-family:var(--ff);gap:1px;margin-bottom:8px;flex-shrink:0;transition:transform .12s}
+.nb-reg:active{transform:scale(.91)}
+.nb-reg .ni{font-size:21px;line-height:1}
+.nb-reg .nl{font-size:8px;font-weight:700}
+
+/* Modals */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(30,27,75,.5);z-index:300;align-items:flex-end;justify-content:center}
+.modal-ov.open{display:flex}
+.modal-sheet{background:var(--white);border-radius:24px 24px 0 0;padding:18px 16px calc(20px + var(--safe-bot));width:100%;max-width:480px;max-height:88vh;overflow-y:auto;position:relative}
+.modal-sheet::-webkit-scrollbar{display:none}
+.modal-handle{width:36px;height:4px;background:#E0D9F7;border-radius:99px;margin:0 auto 16px}
+.modal-title{font-size:15px;font-weight:700;color:var(--txt);margin-bottom:14px}
+.m-close{position:absolute;top:14px;right:14px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--txt2);line-height:1;padding:4px}
+.macro-chip{padding:6px 14px;border-radius:99px;border:1.5px solid var(--border2);background:#F5F3FF;color:var(--p1);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--ff)}
+.macro-chip:active{background:#EDE9FE}
+
+/* Loading overlay */
+.loading-ov{position:fixed;inset:0;background:rgba(240,238,254,.85);z-index:400;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.loading-ov.hide{display:none}
+.spinner{width:36px;height:36px;border:3px solid var(--border2);border-top-color:var(--p1);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-txt{font-size:13px;color:var(--txt2);font-weight:500}
+
+/* Toast */
+.toast{position:fixed;bottom:calc(80px + var(--safe-bot));left:50%;transform:translateX(-50%) translateY(20px);background:#1E1B4B;color:#fff;padding:9px 18px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;transition:all .3s;pointer-events:none;z-index:500;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Privacy */
+.hidden-val{filter:blur(6px);user-select:none;transition:filter .2s}
+
+/* Splash */
+#splash{position:fixed;inset:0;background:linear-gradient(135deg,#6d28d9,#3b82f6);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;transition:opacity .5s}
+#splash.hide{opacity:0;pointer-events:none}
+.splash-logo{font-size:36px;font-weight:700;color:#fff;letter-spacing:-.03em;margin-bottom:8px}
+.splash-sub{font-size:14px;color:rgba(255,255,255,.7);font-weight:500}
+.splash-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);margin-top:32px;animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+
+/* Empty state */
+.empty{padding:32px 20px;text-align:center;color:var(--txt3);font-size:13px}
+.empty i{font-size:32px;display:block;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="splash-logo">TirzeLess</div>
+  <div class="splash-sub">Carregando seus dados...</div>
+  <div class="splash-dot"></div>
+</div>
+
+<div id="app">
+
+  <!-- INÍCIO -->
+  <div id="scr-inicio" class="screen active">
+    <div class="topbar">
+      <div><div class="topbar-logo">TirzeLess</div><div class="topbar-sub" id="saudacao">Carregando...</div></div>
+      <div style="display:flex;gap:8px">
+        <div class="icon-btn" onclick="togglePriv()" aria-label="ocultar"><i class="ti ti-eye" id="priv-ico"></i></div>
+      </div>
+    </div>
+    <div class="scroll">
+      <div class="hero">
+        <div class="hero-label">Peso atual</div>
+        <div class="hero-row">
+          <div class="hero-val sensitive" id="hero-peso">—</div>
+          <div class="hero-unit sensitive">kg</div>
+          <button class="eye-btn" onclick="togglePriv()" aria-label="ocultar"><i class="ti ti-eye-off"></i></button>
+        </div>
+        <div class="hero-delta sensitive" id="hero-delta">Sem registros ainda</div>
+        <span class="hero-link" onclick="openModal('modal-peso')">Ver histórico e foto →</span>
+      </div>
+
+      <p class="sec">Metas do dia</p>
+      <div class="goals-grid">
+        <div class="goal-card water" onclick="openMacro('agua')">
+          <div class="goal-icon-row"><div class="goal-ico gi-w"><i class="ti ti-droplet" style="color:#3B82F6;font-size:18px"></i></div><span class="goal-pct pct-w" id="pct-agua">0%</span></div>
+          <div class="goal-name">Água</div>
+          <div class="goal-num"><span id="val-agua">0</span><span> ml</span></div>
+          <div class="goal-meta">meta: <span id="meta-agua">2500</span> ml</div>
+          <div class="pbar-bg"><div class="pbar-fill pb-w" id="bar-agua" style="width:0%"></div></div>
+        </div>
+        <div class="goal-card prot" onclick="openMacro('prot')">
+          <div class="goal-icon-row"><div class="goal-ico gi-p"><i class="ti ti-meat" style="color:#7C3AED;font-size:18px"></i></div><span class="goal-pct pct-p" id="pct-prot">0%</span></div>
+          <div class="goal-name">Proteína</div>
+          <div class="goal-num"><span id="val-prot">0</span><span> g</span></div>
+          <div class="goal-meta">meta: <span id="meta-prot">120</span> g</div>
+          <div class="pbar-bg"><div class="pbar-fill pb-p" id="bar-prot" style="width:0%"></div></div>
+        </div>
+        <div class="goal-card carb" onclick="openMacro('carb')">
+          <div class="goal-icon-row"><div class="goal-ico gi-c"><i class="ti ti-bread" style="color:#D97706;font-size:18px"></i></div><span class="goal-pct pct-c" id="pct-carb">0%</span></div>
+          <div class="goal-name">Carboidrato</div>
+          <div class="goal-num"><span id="val-carb">0</span><span> g</span></div>
+          <div class="goal-meta">meta: <span id="meta-carb">150</span> g</div>
+          <div class="pbar-bg"><div class="pbar-fill pb-c" id="bar-carb" style="width:0%"></div></div>
+        </div>
+        <div class="goal-card fiber" onclick="openMacro('fiber')">
+          <div class="goal-icon-row"><div class="goal-ico gi-f"><i class="ti ti-leaf" style="color:#10B981;font-size:18px"></i></div><span class="goal-pct pct-f" id="pct-fiber">0%</span></div>
+          <div class="goal-name">Fibras</div>
+          <div class="goal-num"><span id="val-fiber">0</span><span> g</span></div>
+          <div class="goal-meta">meta: <span id="meta-fiber">25</span> g</div>
+          <div class="pbar-bg"><div class="pbar-fill pb-f" id="bar-fiber" style="width:0%"></div></div>
+        </div>
+      </div>
+
+      <p class="sec" style="margin-top:14px">Próxima aplicação</p>
+      <div class="dose-card" onclick="openModal('modal-dose')">
+        <div class="dose-ico"><i class="ti ti-needle" style="font-size:20px;color:#B45309"></i></div>
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:700" id="dose-titulo">—</div>
+          <div style="font-size:11px;color:var(--txt2);margin-top:2px" id="dose-sub">Toque para ver o rodízio</div>
+        </div>
+        <div class="dose-chip" id="dose-chip">—</div>
+      </div>
+
+      <p class="sec" style="margin-top:14px">Indicadores</p>
+      <div class="gauge-row">
+        <div class="gauge-card">
+          <div class="gauge-title">Adesão semanal</div>
+          <svg width="100%" viewBox="0 0 110 64" style="display:block;max-width:120px;margin:0 auto">
+            <defs><linearGradient id="ga" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ef4444"/><stop offset="40%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs>
+            <path d="M10 58 A45 45 0 0 1 100 58" fill="none" stroke="#EDE9FE" stroke-width="10" stroke-linecap="round"/>
+            <path d="M10 58 A45 45 0 0 1 100 58" fill="none" stroke="url(#ga)" stroke-width="10" stroke-linecap="round" stroke-dasharray="141.37" stroke-dashoffset="18"/>
+            <line id="needle-adh" x1="55" y1="58" x2="55" y2="14" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="55" cy="58" r="4" fill="#7C3AED"/>
+            <text x="10" y="62" font-size="8" fill="#ef4444" font-family="Plus Jakarta Sans,sans-serif" font-weight="600">0%</text>
+            <text x="82" y="62" font-size="8" fill="#10b981" font-family="Plus Jakarta Sans,sans-serif" font-weight="600">100%</text>
+            <text x="47" y="14" font-size="8" fill="#f59e0b" font-family="Plus Jakarta Sans,sans-serif" font-weight="600">50%</text>
+          </svg>
+          <div class="gauge-val" id="gauge-adh-val">—</div>
+          <div class="gauge-lbl" id="gauge-adh-lbl">sem dados</div>
+        </div>
+        <div class="gauge-card">
+          <div class="gauge-title">Rodízio zonas</div>
+          <svg width="100%" viewBox="0 0 110 64" style="display:block;max-width:120px;margin:0 auto">
+            <defs><linearGradient id="gb" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ef4444"/><stop offset="40%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#10b981"/></linearGradient></defs>
+            <path d="M10 58 A45 45 0 0 1 100 58" fill="none" stroke="#EDE9FE" stroke-width="10" stroke-linecap="round"/>
+            <path d="M10 58 A45 45 0 0 1 100 58" fill="none" stroke="url(#gb)" stroke-width="10" stroke-linecap="round" stroke-dasharray="141.37" stroke-dashoffset="18"/>
+            <line id="needle-rod" x1="55" y1="58" x2="55" y2="14" stroke="#7C3AED" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="55" cy="58" r="4" fill="#7C3AED"/>
+            <text x="8" y="62" font-size="8" fill="#ef4444" font-family="Plus Jakarta Sans,sans-serif" font-weight="600">Risco</text>
+            <text x="72" y="62" font-size="8" fill="#10b981" font-family="Plus Jakarta Sans,sans-serif" font-weight="600">Ideal</text>
+            <text x="46" y="14" font-size="8" fill="#f59e0b" font-family="Plus Jakarta Sans,sans-serif" font-weight="600">OK</text>
+          </svg>
+          <div class="gauge-val" id="gauge-rod-val">—</div>
+          <div class="gauge-lbl" id="gauge-rod-lbl">sem aplicações</div>
+        </div>
+      </div>
+
+      <p class="sec" style="margin-top:14px">Resumo</p>
+      <div class="streak-row">
+        <div class="streak-card"><div class="streak-num" id="streak-dias">0</div><div class="streak-lbl">dias seguidos</div></div>
+        <div class="streak-card"><div class="streak-num" id="streak-sem">1ª</div><div class="streak-lbl">semana trat.</div></div>
+        <div class="streak-card"><div class="streak-num" id="streak-zonas">0</div><div class="streak-lbl">zonas usadas</div></div>
+      </div>
+      <div style="height:12px"></div>
+    </div>
+  </div>
+
+  <!-- HISTÓRICO -->
+  <div id="scr-hist" class="screen">
+    <div class="topbar"><div><div class="topbar-logo">Histórico</div><div class="topbar-sub">Sua evolução</div></div></div>
+    <div class="scroll">
+      <p class="sec" style="margin-top:0">Evolução de peso</p>
+      <div style="background:var(--white);border-radius:var(--r-lg);border:1.5px solid var(--border);padding:14px;margin-bottom:14px">
+        <div class="chart-bar-wrap" id="hist-chart"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px" id="chart-labels">
+          <span style="font-size:9px;color:var(--txt3)">—</span>
+          <span style="font-size:11px;font-weight:700;color:#10B981" id="chart-delta">—</span>
+          <span style="font-size:9px;color:var(--txt3)">—</span>
+        </div>
+      </div>
+      <p class="sec">Registros</p>
+      <div id="hist-list"><div class="empty"><i class="ti ti-notes"></i>Nenhum registro ainda.<br>Toque em <strong>Registro</strong> para começar!</div></div>
+    </div>
+  </div>
+
+  <!-- REGISTRO -->
+  <div id="scr-reg" class="screen">
+    <div class="topbar"><div><div class="topbar-logo">Registro</div><div class="topbar-sub">Nova entrada</div></div></div>
+    <div class="scroll">
+      <div class="reg-form">
+        <div>
+          <span class="field-label">Foto (opcional)</span>
+          <div class="photo-upload" id="photo-btn" onclick="triggerPhoto()">
+            <i class="ti ti-camera-plus" style="font-size:28px;color:#A78BFA"></i>
+            <span>Toque para tirar/escolher foto</span>
+            <span style="font-size:10px;color:var(--txt3)">Ficará privada no seu perfil</span>
+          </div>
+          <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="handlePhoto(event)">
+          <img id="photo-preview" style="display:none;width:100%;border-radius:14px;margin-top:8px;max-height:160px;object-fit:cover">
+        </div>
+        <div>
+          <span class="field-label">Peso (kg)</span>
+          <input class="field-input" type="number" id="reg-peso" placeholder="ex: 84.0" step="0.1" inputmode="decimal">
+        </div>
+        <div>
+          <span class="field-label">Cintura (cm) — opcional</span>
+          <input class="field-input" type="number" id="reg-cin" placeholder="ex: 92.5" step="0.5" inputmode="decimal">
+        </div>
+        <div>
+          <span class="field-label">Dosagem Mounjaro</span>
+          <select class="field-input" id="reg-dose" onchange="toggleMapa()">
+            <option value="">Não aplicou hoje</option>
+            <option>2,5 mg</option><option>5 mg</option><option>7,5 mg</option>
+            <option>10 mg</option><option>12,5 mg</option><option>15 mg</option>
+          </select>
+        </div>
+        <div id="mapa-wrap" style="display:none">
+          <span class="field-label">Zona de aplicação</span>
+          <div class="abd-wrap">
+            <div class="abd-header">Toque na zona de aplicação</div>
+            <div class="abd-container" id="abd-map">
+              <svg width="100%" height="100%" viewBox="0 0 330 240" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;pointer-events:none">
+                <defs>
+                  <radialGradient id="sk1" cx="50%" cy="25%" r="75%">
+                    <stop offset="0%" stop-color="#f5c5a3"/>
+                    <stop offset="70%" stop-color="#e0956e"/>
+                    <stop offset="100%" stop-color="#c07040"/>
+                  </radialGradient>
+                </defs>
+                <ellipse cx="165" cy="110" rx="130" ry="120" fill="url(#sk1)"/>
+                <ellipse cx="82" cy="72" rx="30" ry="22" fill="#c98060" opacity=".25"/>
+                <ellipse cx="248" cy="72" rx="30" ry="22" fill="#c98060" opacity=".25"/>
+                <line x1="110" y1="0" x2="110" y2="240" stroke="rgba(0,0,0,.07)" stroke-width="1"/>
+                <line x1="220" y1="0" x2="220" y2="240" stroke="rgba(0,0,0,.07)" stroke-width="1"/>
+                <line x1="0" y1="80" x2="330" y2="80" stroke="rgba(0,0,0,.07)" stroke-width="1"/>
+                <line x1="0" y1="160" x2="330" y2="160" stroke="rgba(0,0,0,.07)" stroke-width="1"/>
+                <ellipse cx="165" cy="128" rx="8" ry="9" fill="#8B5E40" opacity=".5"/>
+              </svg>
+              <div class="zone" id="z-hipoc-esq" data-z="Hipocôndrio esq." onclick="selZona(this)" style="left:0;top:0;width:33.3%;height:33.3%;background:rgba(99,102,241,.52)"><div class="zone-inner"><div class="zone-name">Hipocôndrio<br>esq.</div><div class="zone-dot"></div></div></div>
+              <div class="zone" id="z-epigast" data-z="Epigástrio" onclick="selZona(this)" style="left:33.3%;top:0;width:33.4%;height:33.3%;background:rgba(124,58,237,.52)"><div class="zone-inner"><div class="zone-name">Epigástrio</div><div class="zone-dot"></div></div></div>
+              <div class="zone" id="z-hipoc-dir" data-z="Hipocôndrio dir." onclick="selZona(this)" style="left:66.6%;top:0;width:33.4%;height:33.3%;background:rgba(99,102,241,.52)"><div class="zone-inner"><div class="zone-name">Hipocôndrio<br>dir.</div><div class="zone-dot"></div></div></div>
+              <div class="zone" id="z-flanco-esq" data-z="Flanco esq." onclick="selZona(this)" style="left:0;top:33.3%;width:33.3%;height:33.4%;background:rgba(139,92,246,.48)"><div class="zone-inner"><div class="zone-name">Flanco esq.</div><div class="zone-dot"></div></div></div>
+              <div class="zone" id="z-mesogast" data-z="Mesogástrio" onclick="selZona(this)" style="left:33.3%;top:33.3%;width:33.4%;height:33.4%;background:rgba(109,40,217,.55)"><div class="zone-inner"><div class="zone-name">Mesogástrio</div><div class="zone-dot"></div></div></div>
+              <div class="zone" id="z-flanco-dir" data-z="Flanco dir." onclick="selZona(this)" style="left:66.6%;top:33.3%;width:33.4%;height:33.4%;background:rgba(139,92,246,.48)"><div class="zone-inner"><div class="zone-name">Flanco dir.</div><div class="zone-dot"></div></div></div>
+              <div class="zone" id="z-fossa-esq" data-z="Fossa ilíaca esq." onclick="selZona(this)" style="left:0;top:66.6%;width:33.3%;height:33.4%;background:rgba(124,58,237,.44)"><div class="zone-inner"><div class="zone-name">Fossa<br>ilíaca esq.</div><div class="zone-dot"></div></div></div>
+              <div class="zone" id="z-hipogast" data-z="Hipogástrio" onclick="selZona(this)" style="left:33.3%;top:66.6%;width:33.4%;height:33.4%;background:rgba(109,40,217,.48)"><div class="zone-inner"><div class="zone-name">Hipogástrio</div><div class="zone-dot"></div></div></div>
+              <div class="zone" id="z-fossa-dir" data-z="Fossa ilíaca dir." onclick="selZona(this)" style="left:66.6%;top:66.6%;width:33.4%;height:33.4%;background:rgba(124,58,237,.44)"><div class="zone-inner"><div class="zone-name">Fossa<br>ilíaca dir.</div><div class="zone-dot"></div></div></div>
+            </div>
+            <div class="abd-legend">
+              <div class="leg-item"><div class="leg-dot" style="background:#22C55E"></div>Selecionada</div>
+              <div class="leg-item"><div class="leg-dot" style="background:#F59E0B"></div>Usada recente</div>
+              <div class="leg-item"><div class="leg-dot" style="background:rgba(200,180,255,.5);border:1px solid #DDD6FE"></div>Disponível</div>
+            </div>
+            <div id="zona-label" style="text-align:center;font-size:12px;font-weight:700;color:var(--p1);padding:4px 0">Toque em uma zona</div>
+          </div>
+        </div>
+        <div>
+          <span class="field-label">Observações</span>
+          <textarea class="field-input" id="reg-nota" placeholder="Humor, energia, efeitos colaterais..." rows="3" style="resize:none"></textarea>
+        </div>
+        <button class="btn-save" id="btn-salvar" onclick="salvarReg()">Salvar registro</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TREINOS -->
+  <div id="scr-treino" class="screen">
+    <div class="topbar"><div><div class="topbar-logo">Treinos</div><div class="topbar-sub">Meus planos</div></div></div>
+    <div class="scroll">
+      <div id="treino-list"></div>
+      <div class="add-treino">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--txt2)">Novo treino</div>
+        <input type="text" id="t-nome" placeholder="Nome (ex: Costas, Cardio, Full Body...)">
+        <button class="btn-add" onclick="addTreino()">Adicionar treino</button>
+      </div>
+      <div style="height:8px"></div>
+    </div>
+  </div>
+
+  <!-- AJUSTES -->
+  <div id="scr-ajustes" class="screen">
+    <div class="topbar"><div><div class="topbar-logo">Ajustes</div><div class="topbar-sub">Configurações e metas</div></div></div>
+    <div class="scroll">
+      <div style="text-align:center;padding:16px 0 14px">
+        <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--p2),var(--b1));display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;font-weight:700;margin:0 auto 8px">T</div>
+        <div style="font-size:15px;font-weight:700">Meu perfil</div>
+      </div>
+      <div class="perfil-card">
+        <div class="perfil-sec">
+          <div class="perfil-sec-title">Metas diárias</div>
+          <div class="pf-row"><span class="pf-label">Água</span><input class="pf-input" type="number" id="cfg-agua" value="2500" inputmode="numeric"><span class="pf-unit">ml</span></div>
+          <div class="pf-row"><span class="pf-label">Proteína</span><input class="pf-input" type="number" id="cfg-prot" value="120" inputmode="numeric"><span class="pf-unit">g</span></div>
+          <div class="pf-row"><span class="pf-label">Carboidrato</span><input class="pf-input" type="number" id="cfg-carb" value="150" inputmode="numeric"><span class="pf-unit">g</span></div>
+          <div class="pf-row"><span class="pf-label">Fibras</span><input class="pf-input" type="number" id="cfg-fiber" value="25" inputmode="numeric"><span class="pf-unit">g</span></div>
+        </div>
+        <div class="perfil-sec">
+          <div class="perfil-sec-title">Tratamento</div>
+          <div class="pf-row"><span class="pf-label">Dose atual</span>
+            <select class="pf-input" id="cfg-dose" style="width:90px">
+              <option>2,5 mg</option><option selected>5 mg</option><option>7,5 mg</option><option>10 mg</option><option>12,5 mg</option><option>15 mg</option>
+            </select><span class="pf-unit"></span>
+          </div>
+          <div class="pf-row"><span class="pf-label">Peso meta</span><input class="pf-input" type="number" id="cfg-meta-peso" value="75" inputmode="decimal"><span class="pf-unit">kg</span></div>
+          <div class="pf-row"><span class="pf-label">Semana nº</span><input class="pf-input" type="number" id="cfg-semanas" value="1" inputmode="numeric"><span class="pf-unit"></span></div>
+        </div>
+      </div>
+      <button class="btn-save" onclick="salvarConfig()" style="margin-bottom:8px">Salvar configurações</button>
+      <button onclick="limparDados()" style="width:100%;padding:12px;border-radius:var(--r-md);border:1.5px solid #FCA5A5;background:none;color:#EF4444;font-size:13px;font-weight:600;font-family:var(--ff);cursor:pointer;margin-bottom:16px">Apagar todos os dados</button>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottomnav">
+    <button class="nb active" id="nb-inicio" onclick="navTo('inicio')"><span class="ni"><i class="ti ti-home"></i></span><span class="nl">Início</span></button>
+    <button class="nb" id="nb-hist" onclick="navTo('hist')"><span class="ni"><i class="ti ti-chart-line"></i></span><span class="nl">Histórico</span></button>
+    <button class="nb-reg" onclick="navTo('reg')"><span class="ni"><i class="ti ti-plus"></i></span><span class="nl">Registro</span></button>
+    <button class="nb" id="nb-treino" onclick="navTo('treino')"><span class="ni"><i class="ti ti-barbell"></i></span><span class="nl">Treinos</span></button>
+    <button class="nb" id="nb-ajustes" onclick="navTo('ajustes')"><span class="ni"><i class="ti ti-settings"></i></span><span class="nl">Ajustes</span></button>
+  </nav>
+</div>
+
+<!-- MODALS -->
+<div class="modal-ov" id="modal-macro">
+  <div class="modal-sheet">
+    <button class="m-close" onclick="closeModal('modal-macro')"><i class="ti ti-x"></i></button>
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="macro-title">Registrar</div>
+    <input class="field-input" type="number" id="macro-inp" placeholder="quantidade" inputmode="decimal" style="margin-bottom:10px">
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px" id="macro-chips"></div>
+    <button class="btn-save" onclick="saveMacro()">Adicionar</button>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-dose">
+  <div class="modal-sheet">
+    <button class="m-close" onclick="closeModal('modal-dose')"><i class="ti ti-x"></i></button>
+    <div class="modal-handle"></div>
+    <div class="modal-title">Rodízio de aplicação</div>
+    <div id="dose-modal-body"><div class="empty"><i class="ti ti-needle"></i>Nenhuma aplicação registrada.</div></div>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-peso">
+  <div class="modal-sheet">
+    <button class="m-close" onclick="closeModal('modal-peso')"><i class="ti ti-x"></i></button>
+    <div class="modal-handle"></div>
+    <div class="modal-title">Histórico de peso</div>
+    <div style="background:#F5F3FF;border-radius:13px;padding:12px;margin-bottom:12px;border:1.5px solid var(--border2)">
+      <div style="font-size:10px;font-weight:700;color:var(--txt2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Última foto</div>
+      <div id="modal-foto" style="width:100%;height:100px;border-radius:10px;background:linear-gradient(135deg,#EDE9FE,#E0E7FF);display:flex;align-items:center;justify-content:center;color:#A78BFA">
+        <i class="ti ti-camera" style="font-size:22px;margin-right:6px"></i><span style="font-size:12px">Nenhuma foto ainda</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+        <span style="font-size:14px;font-weight:700" id="modal-peso-val" class="sensitive">—</span>
+        <button class="icon-btn" onclick="toggleModalPriv()" style="width:28px;height:28px;border-radius:8px"><i class="ti ti-eye" id="modal-eye-ico" style="font-size:13px"></i></button>
+      </div>
+    </div>
+    <div id="modal-peso-list" style="display:flex;flex-direction:column;gap:5px"></div>
+  </div>
+</div>
+
+<div class="loading-ov hide" id="loading"><div class="spinner"></div><div class="loading-txt" id="loading-txt">Carregando...</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── Supabase config ───────────────────────────────────
+var SUPA_URL = 'https://hnpqhkeicqgwwbqhpyxh.supabase.co';
+var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhucHFoa2VpY3Fnd3dicWhweXhoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MTk5NDIsImV4cCI6MjA5NTI5NTk0Mn0.7o0nir05m4CipsyaieRIxkSFzPAJc0403wDtY_7ZvEg';
+
+var HEADERS = {
+  'Content-Type': 'application/json',
+  'apikey': SUPA_KEY,
+  'Authorization': 'Bearer ' + SUPA_KEY,
+  'Prefer': 'return=representation'
+};
+
+function sbGet(table, params) {
+  var url = SUPA_URL + '/rest/v1/' + table + '?';
+  if (params) url += params;
+  return fetch(url, { headers: HEADERS }).then(function(r){ return r.json(); });
+}
+function sbPost(table, body) {
+  return fetch(SUPA_URL + '/rest/v1/' + table, {
+    method: 'POST', headers: HEADERS, body: JSON.stringify(body)
+  }).then(function(r){ return r.json(); });
+}
+function sbPatch(table, params, body) {
+  return fetch(SUPA_URL + '/rest/v1/' + table + '?' + params, {
+    method: 'PATCH', headers: HEADERS, body: JSON.stringify(body)
+  }).then(function(r){ return r.json(); });
+}
+function sbDelete(table, params) {
+  return fetch(SUPA_URL + '/rest/v1/' + table + '?' + params, {
+    method: 'DELETE', headers: HEADERS
+  });
+}
+
+// ─── State ─────────────────────────────────────────────
+var S = {
+  priv: false,
+  activeMacro: null,
+  selZonaId: '',
+  selZonaVal: '',
+  photoDataUrl: null,
+  registros: [],
+  macros: { agua:0, prot:0, carb:0, fiber:0 },
+  config: { meta_agua:2500, meta_proteina:120, meta_carbo:150, meta_fibras:25, dose_atual:'5 mg', meta_peso:75, semanas:1, zonas_usadas:[] },
+  treinos: []
+};
+
+var MONTHS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+
+// ─── Loading ────────────────────────────────────────────
+function showLoading(txt) { document.getElementById('loading').classList.remove('hide'); document.getElementById('loading-txt').textContent = txt || 'Carregando...'; }
+function hideLoading() { document.getElementById('loading').classList.add('hide'); }
+
+// ─── Toast ──────────────────────────────────────────────
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2400);
+}
+
+// ─── Privacy ────────────────────────────────────────────
+function togglePriv() {
+  S.priv = !S.priv;
+  document.querySelectorAll('.sensitive').forEach(function(e){ e.classList.toggle('hidden-val', S.priv); });
+  document.getElementById('priv-ico').className = S.priv ? 'ti ti-eye-off' : 'ti ti-eye';
+}
+function toggleModalPriv() {
+  var el = document.getElementById('modal-peso-val');
+  el.classList.toggle('hidden-val');
+  document.getElementById('modal-eye-ico').className = el.classList.contains('hidden-val') ? 'ti ti-eye-off' : 'ti ti-eye';
+}
+
+// ─── Navigation ─────────────────────────────────────────
+function navTo(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.querySelectorAll('.nb').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('scr-'+id).classList.add('active');
+  var nb = document.getElementById('nb-'+id);
+  if (nb) nb.classList.add('active');
+  if (id === 'inicio') renderInicio();
+  if (id === 'hist')   renderHist();
+  if (id === 'reg')    initReg();
+  if (id === 'treino') renderTreinos();
+  if (id === 'ajustes') renderAjustes();
+}
+
+// ─── Load all data ──────────────────────────────────────
+async function loadAll() {
+  showLoading('Carregando seus dados...');
+  try {
+    var [regs, cfg, treinos] = await Promise.all([
+      sbGet('registros', 'order=created_at.desc'),
+      sbGet('config', 'id=eq.1'),
+      sbGet('treinos', 'order=ordem.asc')
+    ]);
+    S.registros = Array.isArray(regs) ? regs : [];
+    S.config    = (Array.isArray(cfg) && cfg[0]) ? cfg[0] : S.config;
+    S.treinos   = Array.isArray(treinos) ? treinos : [];
+
+    // macros do dia
+    var hoje = todayISO();
+    var macroRes = await sbGet('macros', 'dia=eq.'+hoje);
+    if (Array.isArray(macroRes) && macroRes[0]) {
+      var m = macroRes[0];
+      S.macros = { agua: m.agua||0, prot: m.proteina||0, carb: m.carboidrato||0, fiber: m.fibras||0 };
+    } else {
+      S.macros = { agua:0, prot:0, carb:0, fiber:0 };
+      await sbPost('macros', { dia: hoje, agua:0, proteina:0, carboidrato:0, fibras:0 });
+    }
+  } catch(e) {
+    showToast('Erro ao conectar ao Supabase. Verifique a conexão.');
+  }
+  hideLoading();
+  renderInicio();
+  renderTreinos();
+}
+
+function todayISO() {
+  return new Date().toISOString().split('T')[0];
+}
+
+// ─── Render Início ──────────────────────────────────────
+function renderInicio() {
+  var h = new Date().getHours();
+  document.getElementById('saudacao').textContent = h<12?'Bom dia! 👋':h<18?'Boa tarde! 👋':'Boa noite! 👋';
+
+  var cfg = S.config;
+  // macros
+  var metas = { agua: cfg.meta_agua||2500, prot: cfg.meta_proteina||120, carb: cfg.meta_carbo||150, fiber: cfg.meta_fibras||25 };
+  Object.keys(S.macros).forEach(function(k) {
+    var pct = Math.min(100, Math.round((S.macros[k] / metas[k]) * 100)) || 0;
+    var el = document.getElementById('val-'+k);
+    if (el) el.textContent = k==='agua' ? S.macros[k].toLocaleString('pt-BR') : S.macros[k];
+    var pctEl = document.getElementById('pct-'+k);
+    if (pctEl) pctEl.textContent = pct+'%';
+    var barEl = document.getElementById('bar-'+k);
+    if (barEl) barEl.style.width = pct+'%';
+    var metaEl = document.getElementById('meta-'+k);
+    if (metaEl) metaEl.textContent = metas[k];
+  });
+
+  // peso
+  if (S.registros.length > 0) {
+    var last = S.registros[0];
+    document.getElementById('hero-peso').textContent = parseFloat(last.peso).toFixed(1);
+    document.getElementById('modal-peso-val').textContent = parseFloat(last.peso).toFixed(1) + ' kg';
+    if (S.registros.length > 1) {
+      var first = S.registros[S.registros.length-1];
+      var diff = (parseFloat(last.peso) - parseFloat(first.peso)).toFixed(1);
+      document.getElementById('hero-delta').textContent = (diff<=0?'↓ ':'↑ ') + Math.abs(diff) + ' kg desde o início';
+    } else {
+      document.getElementById('hero-delta').textContent = 'Primeiro registro!';
+    }
+  }
+
+  // dose próxima
+  var doses = S.registros.filter(function(r){ return r.dose && r.zona; });
+  if (doses.length > 0) {
+    var ld = doses[0];
+    var nd = new Date(ld.created_at); nd.setDate(nd.getDate()+7);
+    var diff2 = Math.ceil((nd - new Date()) / 86400000);
+    document.getElementById('dose-titulo').textContent = 'Mounjaro ' + ld.dose;
+    document.getElementById('dose-sub').textContent = ld.zona + ' · ' + ld.data_str;
+    document.getElementById('dose-chip').textContent = diff2>0 ? diff2+' dias' : 'Hoje!';
+  } else {
+    document.getElementById('dose-titulo').textContent = 'Sem aplicações registradas';
+    document.getElementById('dose-sub').textContent = 'Toque em Registro para começar';
+    document.getElementById('dose-chip').textContent = '—';
+  }
+
+  // gauges
+  var adh = calcAdesao();
+  setGauge('adh', adh, adh+'%', adh>=80?'Ótimo':adh>=50?'Regular':'Atenção');
+  var uzones = S.config.zonas_usadas || [];
+  var rodPct = Math.round((uzones.length / 9) * 100);
+  setGauge('rod', rodPct, uzones.length+' / 9', rodPct>=67?'Ideal':rodPct>=33?'OK':'Início');
+  document.getElementById('streak-zonas').textContent = uzones.length;
+  document.getElementById('streak-sem').textContent = (cfg.semanas||1)+'ª';
+  document.getElementById('streak-dias').textContent = calcStreak();
+
+  if (S.priv) document.querySelectorAll('.sensitive').forEach(function(e){ e.classList.add('hidden-val'); });
+}
+
+function calcAdesao() {
+  if (!S.registros.length) return 0;
+  var days = {};
+  S.registros.forEach(function(r){ days[r.created_at.split('T')[0]] = true; });
+  var count = 0;
+  for (var i=0; i<7; i++) {
+    var d = new Date(); d.setDate(d.getDate()-i);
+    if (days[d.toISOString().split('T')[0]]) count++;
+  }
+  return Math.round((count/7)*100);
+}
+
+function calcStreak() {
+  if (!S.registros.length) return 0;
+  var days = {};
+  S.registros.forEach(function(r){ days[r.created_at.split('T')[0]] = true; });
+  var streak = 0, d = new Date();
+  while (days[d.toISOString().split('T')[0]]) {
+    streak++; d.setDate(d.getDate()-1);
+  }
+  return streak;
+}
+
+function setGauge(id, pct, val, lbl) {
+  var angle = -180 + (pct/100)*180;
+  var rad = (angle-90)*Math.PI/180;
+  var x2 = Math.round(55 + 36*Math.cos(rad));
+  var y2 = Math.round(58 + 36*Math.sin(rad));
+  var n = document.getElementById('needle-'+id);
+  if (n) { n.setAttribute('x2',x2); n.setAttribute('y2',y2); }
+  var v = document.getElementById('gauge-'+id+'-val');
+  var l = document.getElementById('gauge-'+id+'-lbl');
+  if (v) v.textContent = val;
+  if (l) l.textContent = lbl;
+}
+
+// ─── Render Hist ────────────────────────────────────────
+function renderHist() {
+  var regs = S.registros;
+  var chartEl = document.getElementById('hist-chart');
+  chartEl.innerHTML = '';
+
+  if (!regs.length) {
+    document.getElementById('hist-list').innerHTML = '<div class="empty"><i class="ti ti-notes"></i>Nenhum registro ainda.<br>Toque em <strong>Registro</strong> para começar!</div>';
+    return;
+  }
+
+  var weights = regs.map(function(r){ return parseFloat(r.peso); }).reverse().slice(-10);
+  var max = Math.max.apply(null,weights), min = Math.min.apply(null,weights)-0.3, range = max-min||1;
+  weights.forEach(function(w) {
+    var col = document.createElement('div'); col.className='chart-bar-col';
+    var bar = document.createElement('div'); bar.className='chart-bar';
+    bar.style.height = Math.round(((w-min)/range)*60+8)+'px'; bar.title = w.toFixed(1)+' kg';
+    col.appendChild(bar); chartEl.appendChild(col);
+  });
+
+  var diff = (weights[weights.length-1]-weights[0]).toFixed(1);
+  document.getElementById('chart-labels').innerHTML =
+    '<span style="font-size:9px;color:var(--txt3)">'+weights[0].toFixed(1)+' kg</span>'+
+    '<span style="font-size:11px;font-weight:700;color:'+(diff<=0?'#10B981':'#EF4444')+'">'+
+    (diff<=0?'↓ ':'↑ ')+Math.abs(diff)+' kg</span>'+
+    '<span style="font-size:9px;color:var(--txt3)">'+weights[weights.length-1].toFixed(1)+' kg</span>';
+
+  var list = document.getElementById('hist-list');
+  list.innerHTML = '';
+  regs.forEach(function(r) {
+    var d = new Date(r.created_at);
+    var item = document.createElement('div'); item.className='hist-item';
+    var photoHtml = r.photo_url
+      ? '<div class="hist-photo"><img src="'+r.photo_url+'" alt="foto"></div>'
+      : '<div class="hist-photo"><i class="ti ti-camera"></i></div>';
+    var tag = r.dose ? '<span class="hist-tag"><i class="ti ti-needle" style="font-size:9px"></i> '+r.dose+(r.zona?' · '+r.zona:'')+'</span>' : '';
+    item.innerHTML =
+      '<div style="text-align:center;min-width:38px"><div class="hist-day">'+d.getDate()+'</div><div class="hist-mon">'+MONTHS[d.getMonth()]+'</div></div>'+
+      '<div style="flex:1;min-width:0"><div class="hist-peso sensitive">'+parseFloat(r.peso).toFixed(1)+' kg'+(r.cintura?' · '+parseFloat(r.cintura).toFixed(1)+' cm':'')+'</div>'+
+      '<div class="hist-meta">'+(r.nota||'Registro salvo')+'</div>'+tag+'</div>'+photoHtml;
+    list.appendChild(item);
+  });
+
+  // modal peso
+  var mlist = document.getElementById('modal-peso-list');
+  mlist.innerHTML = '';
+  regs.slice(0,6).forEach(function(r) {
+    var d = new Date(r.created_at);
+    var row = document.createElement('div');
+    row.style.cssText='display:flex;justify-content:space-between;padding:8px 10px;background:#F8F7FF;border-radius:10px;border:1px solid var(--border)';
+    row.innerHTML='<span style="font-size:12px;color:var(--txt2)">'+d.getDate()+'/'+(d.getMonth()+1)+'</span><span style="font-size:13px;font-weight:700" class="sensitive">'+parseFloat(r.peso).toFixed(1)+' kg</span>';
+    mlist.appendChild(row);
+  });
+
+  var withPhoto = regs.find(function(r){ return r.photo_url; });
+  if (withPhoto) {
+    document.getElementById('modal-foto').innerHTML='<img src="'+withPhoto.photo_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:10px">';
+    document.getElementById('modal-peso-val').textContent = parseFloat(withPhoto.peso).toFixed(1)+' kg';
+  }
+  if (S.priv) document.querySelectorAll('.sensitive').forEach(function(e){ e.classList.add('hidden-val'); });
+}
+
+// ─── Registro ───────────────────────────────────────────
+function initReg() {
+  S.selZonaVal=''; S.selZonaId=''; S.photoDataUrl=null;
+  document.getElementById('reg-peso').value='';
+  document.getElementById('reg-cin').value='';
+  document.getElementById('reg-nota').value='';
+  document.getElementById('reg-dose').value='';
+  document.getElementById('mapa-wrap').style.display='none';
+  document.getElementById('zona-label').textContent='Toque em uma zona';
+  document.getElementById('photo-preview').style.display='none';
+  document.getElementById('photo-btn').style.display='flex';
+
+  var used = S.config.zonas_usadas || [];
+  document.querySelectorAll('.zone').forEach(function(z) {
+    z.classList.remove('selected','used');
+    if (used.indexOf(z.id) >= 0) z.classList.add('used');
+  });
+}
+
+function toggleMapa() {
+  document.getElementById('mapa-wrap').style.display = document.getElementById('reg-dose').value ? 'block' : 'none';
+}
+
+function selZona(el) {
+  document.querySelectorAll('.zone').forEach(function(z) {
+    z.classList.remove('selected');
+    if ((S.config.zonas_usadas||[]).indexOf(z.id)>=0) z.classList.add('used'); else z.classList.remove('used');
+  });
+  el.classList.remove('used'); el.classList.add('selected');
+  S.selZonaVal = el.dataset.z; S.selZonaId = el.id;
+  document.getElementById('zona-label').textContent = '✓ Selecionada: ' + S.selZonaVal;
+}
+
+function triggerPhoto() { document.getElementById('photo-input').click(); }
+function handlePhoto(e) {
+  var file = e.target.files[0]; if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    S.photoDataUrl = ev.target.result;
+    document.getElementById('photo-preview').src = S.photoDataUrl;
+    document.getElementById('photo-preview').style.display='block';
+    document.getElementById('photo-btn').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function salvarReg() {
+  var peso = document.getElementById('reg-peso').value;
+  if (!peso) { showToast('Informe o peso para continuar'); return; }
+  var btn = document.getElementById('btn-salvar');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+  showLoading('Salvando registro...');
+
+  try {
+    var d = new Date();
+    var reg = {
+      data_str: d.toLocaleDateString('pt-BR'),
+      peso: parseFloat(peso),
+      cintura: document.getElementById('reg-cin').value ? parseFloat(document.getElementById('reg-cin').value) : null,
+      dose: document.getElementById('reg-dose').value || null,
+      zona: S.selZonaVal || null,
+      nota: document.getElementById('reg-nota').value || null,
+      photo_url: S.photoDataUrl || null
+    };
+
+    var result = await sbPost('registros', reg);
+    if (Array.isArray(result) && result[0]) {
+      S.registros.unshift(result[0]);
+    }
+
+    // update zonas_usadas in config
+    if (S.selZonaId) {
+      var uz = S.config.zonas_usadas || [];
+      if (uz.indexOf(S.selZonaId) < 0) uz.push(S.selZonaId);
+      S.config.zonas_usadas = uz;
+      await sbPatch('config', 'id=eq.1', { zonas_usadas: uz });
+    }
+
+    showToast('Registro salvo! ✓');
+    setTimeout(function(){ navTo('hist'); }, 500);
+  } catch(e) {
+    showToast('Erro ao salvar. Verifique a conexão.');
+  }
+  hideLoading();
+  btn.disabled=false; btn.textContent='Salvar registro';
+}
+
+// ─── Macros ─────────────────────────────────────────────
+var MACRO_META = {
+  agua:  { name:'água',        unit:'ml', chips:['100','200','300','500'], field:'agua' },
+  prot:  { name:'proteína',    unit:'g',  chips:['10','20','30','50'],    field:'proteina' },
+  carb:  { name:'carboidrato', unit:'g',  chips:['15','30','50'],          field:'carboidrato' },
+  fiber: { name:'fibras',      unit:'g',  chips:['3','5','8'],             field:'fibras' }
+};
+
+function openMacro(type) {
+  S.activeMacro = type;
+  var m = MACRO_META[type];
+  document.getElementById('macro-title').textContent = 'Registrar ' + m.name;
+  document.getElementById('macro-inp').value = '';
+  document.getElementById('macro-inp').placeholder = 'quantidade em ' + m.unit;
+  var chips = document.getElementById('macro-chips'); chips.innerHTML='';
+  m.chips.forEach(function(c) {
+    var btn=document.createElement('button'); btn.className='macro-chip';
+    btn.textContent='+'+c+' '+m.unit;
+    btn.onclick=function(){ document.getElementById('macro-inp').value=c; };
+    chips.appendChild(btn);
+  });
+  openModal('modal-macro');
+}
+
+async function saveMacro() {
+  var v = parseFloat(document.getElementById('macro-inp').value);
+  if (!v || v<=0) return;
+  var k = S.activeMacro;
+  S.macros[k] = (S.macros[k]||0) + v;
+  closeModal('modal-macro');
+  renderInicio();
+
+  var patch = {};
+  patch[MACRO_META[k].field] = S.macros[k];
+  try {
+    await sbPatch('macros', 'dia=eq.'+todayISO(), patch);
+    showToast('Registrado! ✓');
+  } catch(e) {
+    showToast('Erro ao salvar macro.');
+  }
+}
+
+// ─── Treinos ────────────────────────────────────────────
+function renderTreinos() {
+  var list = document.getElementById('treino-list'); list.innerHTML='';
+  S.treinos.forEach(function(t, i) {
+    var item=document.createElement('div'); item.className='treino-item';
+    item.innerHTML=
+      '<div class="treino-hdr"><div class="treino-num">T'+(i+1)+'</div><div class="treino-name">'+t.nome+'</div>'+
+      '<div class="treino-act"><button class="t-btn" onclick="delTreino('+t.id+')" style="color:#EF4444" aria-label="excluir"><i class="ti ti-trash"></i></button></div></div>'+
+      '<div class="pdf-row"><i class="ti ti-file-type-pdf" style="font-size:15px;color:#EF4444"></i><span style="flex:1">'+(t.pdf_nome||'Sem PDF')+'</span></div>';
+    list.appendChild(item);
+  });
+}
+
+async function addTreino() {
+  var nome=document.getElementById('t-nome').value.trim();
+  if(!nome) return;
+  showLoading('Salvando treino...');
+  try {
+    var res = await sbPost('treinos', { nome:nome, ordem: S.treinos.length });
+    if (Array.isArray(res) && res[0]) { S.treinos.push(res[0]); renderTreinos(); showToast('Treino adicionado!'); }
+    document.getElementById('t-nome').value='';
+  } catch(e) { showToast('Erro ao salvar treino.'); }
+  hideLoading();
+}
+
+async function delTreino(id) {
+  showLoading('Removendo...');
+  try {
+    await sbDelete('treinos', 'id=eq.'+id);
+    S.treinos = S.treinos.filter(function(t){ return t.id!==id; });
+    renderTreinos(); showToast('Treino removido.');
+  } catch(e) { showToast('Erro ao remover.'); }
+  hideLoading();
+}
+
+// ─── Ajustes ────────────────────────────────────────────
+function renderAjustes() {
+  var c = S.config;
+  document.getElementById('cfg-agua').value  = c.meta_agua||2500;
+  document.getElementById('cfg-prot').value  = c.meta_proteina||120;
+  document.getElementById('cfg-carb').value  = c.meta_carbo||150;
+  document.getElementById('cfg-fiber').value = c.meta_fibras||25;
+  document.getElementById('cfg-dose').value  = c.dose_atual||'5 mg';
+  document.getElementById('cfg-meta-peso').value = c.meta_peso||75;
+  document.getElementById('cfg-semanas').value   = c.semanas||1;
+}
+
+async function salvarConfig() {
+  var cfg = {
+    meta_agua:      parseInt(document.getElementById('cfg-agua').value)||2500,
+    meta_proteina:  parseInt(document.getElementById('cfg-prot').value)||120,
+    meta_carbo:     parseInt(document.getElementById('cfg-carb').value)||150,
+    meta_fibras:    parseInt(document.getElementById('cfg-fiber').value)||25,
+    dose_atual:     document.getElementById('cfg-dose').value,
+    meta_peso:      parseFloat(document.getElementById('cfg-meta-peso').value)||75,
+    semanas:        parseInt(document.getElementById('cfg-semanas').value)||1
+  };
+  showLoading('Salvando configurações...');
+  try {
+    await sbPatch('config', 'id=eq.1', cfg);
+    Object.assign(S.config, cfg);
+    showToast('Configurações salvas! ✓');
+    renderInicio();
+  } catch(e) { showToast('Erro ao salvar.'); }
+  hideLoading();
+}
+
+async function limparDados() {
+  if (!confirm('Apagar TODOS os dados? Esta ação não pode ser desfeita.')) return;
+  showLoading('Apagando dados...');
+  try {
+    await Promise.all([
+      sbDelete('registros', 'id=gte.0'),
+      sbDelete('treinos',   'id=gte.0'),
+      sbPatch('config', 'id=eq.1', { meta_agua:2500, meta_proteina:120, meta_carbo:150, meta_fibras:25, dose_atual:'5 mg', meta_peso:75, semanas:1, zonas_usadas:[] }),
+      sbPatch('macros', 'dia=eq.'+todayISO(), { agua:0, proteina:0, carboidrato:0, fibras:0 })
+    ]);
+    S.registros=[]; S.treinos=[]; S.macros={agua:0,prot:0,carb:0,fiber:0};
+    showToast('Dados apagados.');
+    renderInicio(); renderTreinos();
+  } catch(e) { showToast('Erro ao apagar.'); }
+  hideLoading();
+}
+
+// ─── Modals ─────────────────────────────────────────────
+function openModal(id) {
+  if (id==='modal-dose') renderDoseModal();
+  if (id==='modal-peso') renderHist();
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-ov').forEach(function(m) {
+  m.addEventListener('click', function(e){ if(e.target===m) m.classList.remove('open'); });
+});
+
+function renderDoseModal() {
+  var doses = S.registros.filter(function(r){ return r.dose && r.zona; });
+  var el = document.getElementById('dose-modal-body');
+  if (!doses.length) { el.innerHTML='<div class="empty"><i class="ti ti-needle"></i>Nenhuma aplicação registrada.</div>'; return; }
+  var ld = doses[0];
+  var nd = new Date(ld.created_at); nd.setDate(nd.getDate()+7);
+  var zonas = ['Hipocôndrio esq.','Epigástrio','Hipocôndrio dir.','Flanco esq.','Mesogástrio','Flanco dir.','Fossa ilíaca esq.','Hipogástrio','Fossa ilíaca dir.'];
+  var idx = zonas.indexOf(ld.zona);
+  var prox = zonas[(idx+1)%zonas.length];
+
+  el.innerHTML =
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">'+
+    '<div style="background:#ECFDF5;border-radius:13px;padding:12px;border:1.5px solid #A7F3D0"><div style="font-size:10px;font-weight:700;color:#065F46;margin-bottom:3px">ÚLTIMA</div><div style="font-size:13px;font-weight:700">'+ld.data_str+' · '+ld.dose+'</div><div style="font-size:11px;color:#059669;margin-top:2px">'+ld.zona+'</div></div>'+
+    '<div style="background:#FFFBEB;border-radius:13px;padding:12px;border:1.5px solid #FDE68A"><div style="font-size:10px;font-weight:700;color:#92400E;margin-bottom:3px">SUGERIDA</div><div style="font-size:13px;font-weight:700">'+nd.toLocaleDateString('pt-BR')+'</div><div style="font-size:11px;color:#D97706;margin-top:2px">'+prox+'</div></div>'+
+    '</div>'+
+    '<div style="background:#F5F3FF;border-radius:13px;padding:12px;border:1.5px solid var(--border2)">'+
+    '<div style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--txt2);margin-bottom:8px">Histórico de aplicações</div>'+
+    doses.slice(0,5).map(function(r){
+      return '<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px">'+
+        '<span style="color:var(--txt2)">'+r.data_str+'</span><span style="font-weight:600">'+r.dose+'</span><span style="color:var(--p1)">'+r.zona+'</span></div>';
+    }).join('')+
+    '</div>';
+}
+
+// ─── Init ───────────────────────────────────────────────
+loadAll();
+
+setTimeout(function(){
+  document.getElementById('splash').classList.add('hide');
+  setTimeout(function(){ document.getElementById('splash').style.display='none'; }, 500);
+}, 1800);
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
